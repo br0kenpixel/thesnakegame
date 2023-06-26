@@ -1,5 +1,7 @@
 # TheSnakeGame
 
+![Demo gif](img/demo.gif)
+
 A simple snake game written in Rust.
 
 # Libraries
