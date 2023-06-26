@@ -120,6 +120,7 @@ impl StateInfo {
         if self.head_pos == self.food {
             self.score += 1;
             self.food = Self::gen_new_food();
+            self.food_spawn_time = Instant::now();
         }
 
         if [0, WIDTH - 1].contains(&self.head_pos.x) || [0, HEIGHT - 1].contains(&self.head_pos.y) {
