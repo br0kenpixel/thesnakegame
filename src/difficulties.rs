@@ -17,23 +17,23 @@ impl From<Difficulty> for DifficultyProps {
     fn from(value: Difficulty) -> Self {
         match value {
             Difficulty::Easy => Self {
-                snake_move_interval: 35,
-                food_lifetime: 15,
+                snake_move_interval: 40,
+                food_lifetime: 18,
             },
             Difficulty::Normal => Self {
-                snake_move_interval: 30,
+                snake_move_interval: 35,
                 food_lifetime: 10,
             },
             Difficulty::Hard => Self {
-                snake_move_interval: 25,
+                snake_move_interval: 30,
                 food_lifetime: 8,
             },
             Difficulty::Extreme => Self {
-                snake_move_interval: 18,
+                snake_move_interval: 20,
                 food_lifetime: 7,
             },
             Difficulty::Extreme2 => Self {
-                snake_move_interval: 12,
+                snake_move_interval: 16,
                 food_lifetime: 8,
             },
         }
