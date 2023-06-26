@@ -258,7 +258,7 @@ impl Default for State {
     fn default() -> Self {
         Self::MainScreen(MainScreenInfo {
             choice: 0,
-            difficulty: Difficulty::Easy,
+            difficulty: Difficulty::default(),
             last_key: None,
         })
     }
