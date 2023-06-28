@@ -9,6 +9,7 @@ mod difficulties;
 mod macros;
 mod moveobj;
 mod state;
+mod tail;
 
 use bracket_terminal::prelude::*;
 use consts::*;

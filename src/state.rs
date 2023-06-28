@@ -3,6 +3,7 @@ use crate::{
     difficulties::{Difficulty, DifficultyProps},
     moveobj::Move,
     set_pixel,
+    tail::Tail,
 };
 use bracket_terminal::prelude::*;
 use rand::{prelude::*, rngs::OsRng};
@@ -31,7 +32,7 @@ pub struct StateInfo {
     snake_move_interval: u128,
     food_lifetime: u64,
     head_pos: Point,
-    tails: Vec<Point>,
+    tail: Tail,
     food: Point,
     move_direction: Move,
     score: i8,
@@ -54,7 +55,7 @@ impl StateInfo {
             snake_move_interval: difficulty.snake_move_interval,
             food_lifetime: difficulty.food_lifetime,
             head_pos: Point::new(5, 5),
-            tails: Vec::new(),
+            tail: Tail::new(0),
             food: Self::gen_new_food(),
             move_direction: Move::Right,
             score: 0,
@@ -77,6 +78,10 @@ impl StateInfo {
 
         // Clear current position
         set_pixel!(ctx, self.head_pos.x, self.head_pos.y, GREEN, ' ');
+
+        if self.tail.len() > 0 {
+            self.tail.push(Point::new(self.head_pos.x, self.head_pos.y));
+        }
 
         match self.move_direction {
             Move::Left => self.head_pos.x -= 1,
@@ -121,6 +126,11 @@ impl StateInfo {
             self.score += 1;
             self.food = Self::gen_new_food();
             self.food_spawn_time = Instant::now();
+            self.tail.inc_length();
+        }
+
+        if self.tail.contains(self.head_pos) {
+            return true;
         }
 
         if [0, WIDTH - 1].contains(&self.head_pos.x) || [0, HEIGHT - 1].contains(&self.head_pos.y) {
@@ -157,9 +167,22 @@ impl StateInfo {
             }
         }
 
+        if self.tail.len() > 0 {
+            for point in self.tail.iter() {
+                set_pixel!(ctx, point.x, point.y, BLACK, ' ');
+            }
+        }
+
         self.move_player(ctx);
 
         set_pixel!(ctx, self.head_pos.x, self.head_pos.y, GREEN, '@');
+
+        if self.tail.len() > 0 {
+            for point in self.tail.iter() {
+                set_pixel!(ctx, point.x, point.y, GREEN, 'x');
+            }
+        }
+
         false
     }
 }
