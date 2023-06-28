@@ -1,10 +1,4 @@
-use crate::{
-    consts::*,
-    difficulties::{Difficulty, DifficultyProps},
-    moveobj::Move,
-    set_pixel,
-    tail::Tail,
-};
+use crate::{consts::*, difficulties::Difficulty, moveobj::Move, set_pixel, tail::Tail};
 use bracket_terminal::prelude::*;
 use rand::{prelude::*, rngs::OsRng};
 use std::{
@@ -48,12 +42,10 @@ pub struct EndInfo {
 
 impl StateInfo {
     pub fn new(difficulty: Difficulty) -> Self {
-        let difficulty: DifficultyProps = difficulty.into();
-
         Self {
             start: Instant::now(),
-            snake_move_interval: difficulty.snake_move_interval,
-            food_lifetime: difficulty.food_lifetime,
+            snake_move_interval: difficulty.snake_move_interval(),
+            food_lifetime: difficulty.food_lifetime(),
             head_pos: Point::new(5, 5),
             tail: Tail::new(0),
             food: Self::gen_new_food(),

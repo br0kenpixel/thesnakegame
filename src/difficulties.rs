@@ -8,39 +8,27 @@ pub enum Difficulty {
     Extreme2,
 }
 
-pub struct DifficultyProps {
-    pub snake_move_interval: u128, //ms
-    pub food_lifetime: u64,        //sec
-}
-
-impl From<Difficulty> for DifficultyProps {
-    fn from(value: Difficulty) -> Self {
-        match value {
-            Difficulty::Easy => Self {
-                snake_move_interval: 40,
-                food_lifetime: 18,
-            },
-            Difficulty::Normal => Self {
-                snake_move_interval: 35,
-                food_lifetime: 10,
-            },
-            Difficulty::Hard => Self {
-                snake_move_interval: 30,
-                food_lifetime: 8,
-            },
-            Difficulty::Extreme => Self {
-                snake_move_interval: 20,
-                food_lifetime: 7,
-            },
-            Difficulty::Extreme2 => Self {
-                snake_move_interval: 16,
-                food_lifetime: 8,
-            },
+impl Difficulty {
+    pub const fn snake_move_interval(self) -> u128 {
+        match self {
+            Self::Easy => 50,
+            Self::Normal => 40,
+            Self::Hard => 35,
+            Self::Extreme => 20,
+            Self::Extreme2 => 16,
         }
     }
-}
 
-impl Difficulty {
+    pub const fn food_lifetime(self) -> u64 {
+        match self {
+            Self::Easy => 20,
+            Self::Normal => 10,
+            Self::Hard => 8,
+            Self::Extreme => 7,
+            Self::Extreme2 => 8,
+        }
+    }
+
     pub fn increase(&mut self) {
         *self = match self {
             Self::Easy => Self::Normal,
@@ -60,10 +48,10 @@ impl Difficulty {
     }
 
     pub fn description(self) -> String {
-        let props: DifficultyProps = self.into();
         let mut result = format!(
             "Snake moves every {}ms and food lasts for {} seconds",
-            props.snake_move_interval, props.food_lifetime
+            self.snake_move_interval(),
+            self.food_lifetime()
         );
 
         if self == Self::Extreme2 {
