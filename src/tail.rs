@@ -1,7 +1,7 @@
 use bracket_terminal::prelude::Point;
 use std::collections::VecDeque;
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Tail {
     points: VecDeque<Point>,
     length: usize,

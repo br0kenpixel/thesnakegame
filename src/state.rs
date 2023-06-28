@@ -10,7 +10,14 @@ use std::{
 pub enum State {
     MainScreen(MainScreenInfo),
     InGame(StateInfo),
+    Paused(StateInfo),
     End(EndInfo),
+}
+
+pub enum GameEvent {
+    End,
+    Pause,
+    Continue,
 }
 
 #[derive(Debug, PartialEq, Eq)]
@@ -20,7 +27,7 @@ pub struct MainScreenInfo {
     last_key: Option<VirtualKeyCode>,
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct StateInfo {
     start: Instant,
     snake_move_interval: u128,
@@ -111,7 +118,7 @@ impl StateInfo {
         ctx.print(WIDTH - SCORE_INDICATOR_OFFSET, 0, "[Score:     ]");
     }
 
-    pub fn game_tick(&mut self, ctx: &mut BTerm) -> bool {
+    pub fn game_tick(&mut self, ctx: &mut BTerm) -> GameEvent {
         let input = INPUT.lock();
 
         if self.head_pos == self.food {
@@ -122,11 +129,11 @@ impl StateInfo {
         }
 
         if self.tail.contains(self.head_pos) {
-            return true;
+            return GameEvent::End;
         }
 
         if [0, WIDTH - 1].contains(&self.head_pos.x) || [0, HEIGHT - 1].contains(&self.head_pos.y) {
-            return true;
+            return GameEvent::End;
         }
 
         self.check_food_expiry(ctx);
@@ -155,6 +162,7 @@ impl StateInfo {
                 VirtualKeyCode::D | VirtualKeyCode::Right if self.move_direction != Move::Left => {
                     self.move_direction = Move::Right;
                 }
+                VirtualKeyCode::Escape => return GameEvent::Pause,
                 _ => (),
             }
         }
@@ -175,7 +183,23 @@ impl StateInfo {
             }
         }
 
-        false
+        GameEvent::Continue
+    }
+
+    pub fn setup_paused_screen(ctx: &mut BTerm) {
+        ctx.cls();
+        ctx.print_color_centered((HEIGHT / 2) - 1, ORANGE, BLACK, "Paused");
+        ctx.print_centered(HEIGHT / 2, "Press [Enter] to resume game.");
+    }
+
+    pub fn pased_tick(&self) -> GameEvent {
+        let input = INPUT.lock();
+
+        if let Some(VirtualKeyCode::Return) = input.key_pressed_set().iter().next() {
+            return GameEvent::Continue;
+        }
+
+        GameEvent::Pause
     }
 }
 

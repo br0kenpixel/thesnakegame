@@ -24,10 +24,21 @@ impl GameState for State {
                     StateInfo::setup_screen(ctx);
                 }
             }
-            Self::InGame(inner_state) => {
-                if inner_state.game_tick(ctx) {
+            Self::InGame(inner_state) => match inner_state.game_tick(ctx) {
+                GameEvent::End => {
                     let end_stats: EndInfo = inner_state.into();
                     *self = Self::End(end_stats);
+                }
+                GameEvent::Pause => {
+                    StateInfo::setup_paused_screen(ctx);
+                    *self = Self::Paused(inner_state.clone());
+                }
+                GameEvent::Continue => (),
+            },
+            Self::Paused(inner_state) => {
+                if let GameEvent::Continue = inner_state.pased_tick() {
+                    StateInfo::setup_screen(ctx);
+                    *self = Self::InGame(inner_state.clone());
                 }
             }
             Self::End(inner_state) => inner_state.screen_tick(ctx),
