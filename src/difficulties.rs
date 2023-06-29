@@ -11,7 +11,7 @@ pub enum Difficulty {
 impl Difficulty {
     pub const fn snake_move_interval(self) -> u128 {
         match self {
-            Self::Easy => 50,
+            Self::Easy => 55,
             Self::Normal => 40,
             Self::Hard => 35,
             Self::Extreme => 20,
