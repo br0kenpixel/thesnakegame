@@ -6,3 +6,9 @@ edition = "2021"
 [dependencies]
 bracket-terminal = { version = "0.8.7", default-features = false, features = ["opengl"] }
 rand = "0.8.5"
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
