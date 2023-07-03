@@ -48,7 +48,7 @@ impl GameState for State {
 
 fn main() -> BError {
     let context = BTermBuilder::simple(WIDTH, HEIGHT)?
-        .with_title("Mini Game")
+        .with_title("Snake")
         .with_fps_cap(FPS_LIMIT)
         .build()?;
 
