@@ -1,10 +1,10 @@
 [package]
 name = "thesnakegame"
-version = "0.1.3"
+version = "0.1.4"
 edition = "2021"
 
 [dependencies]
-bracket-terminal = { version = "0.8.7", default-features = false, features = ["opengl"] }
+bracket-terminal = "0.8.7"
 rand = "0.8.5"
 
 [profile.dev]
