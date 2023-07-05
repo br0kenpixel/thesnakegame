@@ -1,4 +1,4 @@
-use bracket_terminal::prelude::Point;
+use bracket_lib::prelude::Point;
 use std::collections::VecDeque;
 
 #[derive(Debug, PartialEq, Eq, Clone)]

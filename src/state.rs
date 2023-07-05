@@ -1,5 +1,5 @@
 use crate::{consts::*, difficulties::Difficulty, moveobj::Move, set_pixel, tail::Tail};
-use bracket_terminal::prelude::*;
+use bracket_lib::prelude::*;
 use rand::{prelude::*, rngs::OsRng};
 use std::{
     process::exit,

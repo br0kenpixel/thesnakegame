@@ -11,7 +11,7 @@ mod moveobj;
 mod state;
 mod tail;
 
-use bracket_terminal::prelude::*;
+use bracket_lib::prelude::*;
 use consts::*;
 use state::*;
 

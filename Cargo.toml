@@ -1,10 +1,10 @@
 [package]
 name = "thesnakegame"
-version = "0.1.4"
+version = "0.1.5"
 edition = "2021"
 
 [dependencies]
-bracket-terminal = "0.8.7"
+bracket-lib = { git = "https://github.com/amethyst/bracket-lib.git" }
 rand = "0.8.5"
 
 [profile.dev]
