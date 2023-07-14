@@ -41,7 +41,11 @@ impl GameState for State {
                     *self = Self::InGame(inner_state.clone());
                 }
             }
-            Self::End(inner_state) => inner_state.screen_tick(ctx),
+            Self::End(inner_state) => {
+                if inner_state.screen_tick(ctx) {
+                    EndInfo::restart_game(self);
+                }
+            }
         }
     }
 }

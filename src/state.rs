@@ -1,10 +1,7 @@
 use crate::{consts::*, difficulties::Difficulty, moveobj::Move, set_pixel, tail::Tail};
 use bracket_lib::prelude::*;
 use rand::{prelude::*, rngs::OsRng};
-use std::{
-    process::exit,
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum State {
@@ -20,7 +17,7 @@ pub enum GameEvent {
     Continue,
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, Default, PartialEq, Eq)]
 pub struct MainScreenInfo {
     choice: u8,
     pub difficulty: Difficulty,
@@ -265,7 +262,7 @@ impl MainScreenInfo {
 }
 
 impl EndInfo {
-    pub fn screen_tick(&mut self, ctx: &mut BTerm) {
+    pub fn screen_tick(&mut self, ctx: &mut BTerm) -> bool {
         let input = INPUT.lock();
         ctx.cls();
 
@@ -286,21 +283,24 @@ impl EndInfo {
             }),
         );
 
-        ctx.print_centered(HEIGHT - 1, "Press [ENTER] to exit the game.");
+        ctx.print_centered(HEIGHT - 1, "Press [ENTER] to restart the game.");
 
-        if input.key_pressed_set().iter().next() == Some(&VirtualKeyCode::Return) {
-            exit(0);
-        }
+        input.key_pressed_set().iter().next() == Some(&VirtualKeyCode::Return)
+    }
+
+    pub fn restart_game(state: &mut State) {
+        let info = MainScreenInfo {
+            last_key: Some(VirtualKeyCode::Return),
+            ..Default::default()
+        };
+
+        *state = State::MainScreen(info);
     }
 }
 
 impl Default for State {
     fn default() -> Self {
-        Self::MainScreen(MainScreenInfo {
-            choice: 0,
-            difficulty: Difficulty::default(),
-            last_key: None,
-        })
+        Self::MainScreen(MainScreenInfo::default())
     }
 }
 
