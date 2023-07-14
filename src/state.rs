@@ -1,7 +1,10 @@
 use crate::{consts::*, difficulties::Difficulty, moveobj::Move, set_pixel, tail::Tail};
 use bracket_lib::prelude::*;
 use rand::{prelude::*, rngs::OsRng};
-use std::time::{Duration, Instant};
+use std::{
+    process::exit,
+    time::{Duration, Instant},
+};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum State {
@@ -249,6 +252,9 @@ impl MainScreenInfo {
                     VirtualKeyCode::Return if self.choice == 0 => {
                         self.last_key = None;
                         return true;
+                    }
+                    VirtualKeyCode::Escape => {
+                        exit(0);
                     }
                     _ => (),
                 }
