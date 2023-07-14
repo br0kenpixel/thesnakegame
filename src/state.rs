@@ -289,9 +289,14 @@ impl EndInfo {
             }),
         );
 
+        ctx.print_centered(HEIGHT - 2, "Press [ESC] to exit the game.");
         ctx.print_centered(HEIGHT - 1, "Press [ENTER] to restart the game.");
 
-        input.key_pressed_set().iter().next() == Some(&VirtualKeyCode::Return)
+        match input.key_pressed_set().iter().next() {
+            Some(&VirtualKeyCode::Return) => true,
+            Some(&VirtualKeyCode::Escape) => exit(0),
+            _ => false,
+        }
     }
 
     pub fn restart_game(state: &mut State) {
