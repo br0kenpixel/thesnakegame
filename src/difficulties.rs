@@ -23,9 +23,8 @@ impl Difficulty {
         match self {
             Self::Easy => 20,
             Self::Normal => 10,
-            Self::Hard => 8,
+            Self::Hard | Self::Extreme2 => 8,
             Self::Extreme => 7,
-            Self::Extreme2 => 8,
         }
     }
 

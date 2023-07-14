@@ -192,10 +192,11 @@ impl StateInfo {
         ctx.print_centered(HEIGHT / 2, "Press [Enter] to resume game.");
     }
 
+    #[allow(clippy::unused_self)]
     pub fn pased_tick(&self) -> GameEvent {
         let input = INPUT.lock();
 
-        if let Some(VirtualKeyCode::Return) = input.key_pressed_set().iter().next() {
+        if input.key_pressed_set().iter().next() == Some(&VirtualKeyCode::Return) {
             return GameEvent::Continue;
         }
 
@@ -268,6 +269,7 @@ impl MainScreenInfo {
 }
 
 impl EndInfo {
+    #[allow(clippy::significant_drop_in_scrutinee)]
     pub fn screen_tick(&mut self, ctx: &mut BTerm) -> bool {
         let input = INPUT.lock();
         ctx.cls();

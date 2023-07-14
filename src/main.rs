@@ -36,7 +36,7 @@ impl GameState for State {
                 GameEvent::Continue => (),
             },
             Self::Paused(inner_state) => {
-                if let GameEvent::Continue = inner_state.pased_tick() {
+                if matches!(inner_state.pased_tick(), GameEvent::Continue) {
                     StateInfo::setup_screen(ctx);
                     *self = Self::InGame(inner_state.clone());
                 }
